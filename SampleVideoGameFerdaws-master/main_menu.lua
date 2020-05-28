@@ -53,7 +53,7 @@ local function Level1ScreenTransition( )
 end    
 
 local function InstructionsTransition( )
-    composer.gotoScene( "instructions screen", {effect = "zoomInOutFade", time = 500})
+    composer.gotoScene( "Instructions Screen", {effect = "flipFadeOutIn", time = 500})
 end
 -- INSERT LOCAL FUNCTION DEFINITION THAT GOES TO INSTRUCTIONS SCREEN 
 
@@ -142,8 +142,6 @@ function scene:create( event )
     -- Associating button widgets with this scene
     sceneGroup:insert( playButton )
     sceneGroup:insert( creditsButton )
-    sceneGroup:Insert( InstructionsButton)
-
     
     -- INSERT INSTRUCTIONS BUTTON INTO SCENE GROUP
 
