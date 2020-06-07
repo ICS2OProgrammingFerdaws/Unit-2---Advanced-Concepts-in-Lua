@@ -49,7 +49,7 @@ end
 
 -- Creating Transition to Level1 Screen
 local function Level1ScreenTransition( )
-    composer.gotoScene( "level1_screen", {effect = "zoomInOutFade", time = 1000})
+    composer.gotoScene( "level1_screen", {effect = "zoomInOutFadeRotate", time = 1000})
 end    
 
 local function InstructionsTransition( )
