@@ -1,48 +1,57 @@
 -----------------------------------------------------------------------------------------
 --
--- splash_screen.lua
--- Created by: Ferdaws
--- Date: Month Day, Year
--- Description: This is the splash screen of the game. It displays the 
--- company logo that...
+-- intro_screen.lua
+-- Created by: Ms Raffin
+-- Date: Nov. 22nd, 2014
+-- Description: This is the splash screen of the game. It displays the app logo and the 
+-- company logo with some sort of animation...
 -----------------------------------------------------------------------------------------
 
 -- Use Composer Library
 local composer = require( "composer" )
 
+-- use the physics library
+local physics = require("physics")
+
 -- Name the Scene
 sceneName = "splash_screen"
-
------------------------------------------------------------------------------------------
 
 -- Create Scene Object
 local scene = composer.newScene( sceneName )
 
-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------
 -- LOCAL VARIABLES
 -----------------------------------------------------------------------------------------
- 
--- The local variables for this scene
-local beetleship
-local scrollXSpeed = 8
-local scrollYSpeed = -3
-local jungleSounds = audio.loadSound("Sounds/animals144.mp3")
-local jungleSoundsChannel
 
---------------------------------------------------------------------------------------------
+local logo
+local bottom
+
+--Spring sound effect
+ local springsound = audio.loadSound( "Sounds/BoingSoundEffect.mp3" )
+ local springSoundChannel
+
+-----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
---------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 
--- The function that moves the beetleship across the screen
-local function moveBeetleship()
-    beetleship.x = beetleship.x + scrollXSpeed
-    beetleship.y = beetleship.y + scrollYSpeed
-end
-
--- The function that will go to the main menu 
 local function gotoMainMenu()
     composer.gotoScene( "main_menu" )
 end
+
+--When this function is called, play the springt sound effect
+ local function SpringSoundEffect( )
+    -- play sound
+    springSoundChannel = audio.play(springsound)
+ end
+
+--When the game starts, it waits and calls this function
+local function SplashStart( )
+    timer.performWithDelay(1950, SpringSoundEffect)
+end
+
+
 
 -----------------------------------------------------------------------------------------
 -- GLOBAL SCENE FUNCTIONS
@@ -54,18 +63,31 @@ function scene:create( event )
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
 
-    -- set the background to be black
-    display.setDefault("background", 0, 0, 0)
+    --Hide the status bar
+    display.setStatusBar(display.HiddenStatusBar)
 
-    -- Insert the beetleship image
-    beetleship = display.newImageRect("Images/beetleship.png", 200, 200)
+    -- set the background color
+    display.setDefault("background", 1, 1, 1)
 
-    -- set the initial x and y position of the beetleship
-    beetleship.x = 100
-    beetleship.y = display.contentHeight/2
+
+    -- logo image
+    logo = display.newImageRect("Images/CompanyLogoLeo.png", 700, 500)
+
+    -- set the x and y position of the logo
+    logo.x = display.contentWidth/2
+    logo.y = -300
+   
+    
+    -- create the bottom and set its position on the screen
+    bottom = display.newLine(500, 400, 0, 144)
+    bottom.x = display.contentCenterX
+    bottom.y = 768
+    bottom.isVisible = false
+
 
     -- Insert objects into the scene group in order to ONLY be associated with this scene
-    sceneGroup:insert( beetleship )
+    sceneGroup:insert( logo )
+    sceneGroup:insert (bottom)
 
 end -- function scene:create( event )
 
@@ -87,16 +109,24 @@ function scene:show( event )
     if ( phase == "will" ) then
        
     -----------------------------------------------------------------------------------------
-
+        -- start the physics engine
+        physics.start()
+    
     elseif ( phase == "did" ) then
-        -- start the splash screen music
-        jungleSoundsChannel = audio.play(jungleSounds )
 
-        -- Call the moveBeetleship function as soon as we enter the frame.
-        Runtime:addEventListener("enterFrame", moveBeetleship)
+        --Make the logo dynamic so that it will move
+        physics.addBody(logo, "dynamic", {density=0.04, friction=0})
+
+        logo:applyForce( 0, 1000, logo.x, logo.y )
+
+        --make the bottom static so that it won't move
+        physics.addBody(bottom, "static")
+
+        -- Call the GameStart function as soon as we enter the frame.
+        SplashStart( )
 
         -- Go to the main menu screen after the given time.
-        timer.performWithDelay ( 3000, gotoMainMenu)          
+        timer.performWithDelay ( 4500, gotoMainMenu)          
         
     end
 
@@ -109,24 +139,23 @@ function scene:hide( event )
 
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
-    local phase = event.phase
+    local phase = event.phase 
 
-    -----------------------------------------------------------------------------------------
+    -- Called when the scene is still off screen (but is about to come on screen).
+    if ( phase == "will" ) then
 
-    -- Called when the scene is on screen (but is about to go off screen).
-    -- Insert code here to "pause" the scene.
-    -- Example: stop timers, stop animation, stop audio, etc.
-    if ( phase == "will" ) then  
+        --Make the logo dynamic so that it will move
+        physics.removeBody(logo)
 
-    -----------------------------------------------------------------------------------------
-
-    -- Called immediately after scene goes off screen.
-    elseif ( phase == "did" ) then
+        --make the bottom static so that it won't move
+        physics.removeBody(bottom)
         
-        -- stop the jungle sounds channel for this screen
-        audio.stop(jungleSoundsChannel)
+    elseif ( phase == "did") then
+
+        physics.stop()
     end
 
+    -----------------------------------------------------------------------------------------
 end --function scene:hide( event )
 
 -----------------------------------------------------------------------------------------

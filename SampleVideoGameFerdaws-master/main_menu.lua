@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------------
 --
 -- main_menu.lua
--- Created by: Your Name
+-- Created by: Ferdaws
 -- Date: Month Day, Year
 -- Description: This is the main menu, displaying the credits, instructions & play buttons.
 -----------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ local InstructionsButton
 
 -- Creating Transition Function to Credits Page
 local function CreditsTransition( )       
-    composer.gotoScene( "credits_screen", {effect = "flipFadeOutIn", time = 500})
+    composer.gotoScene( "credits_screen", {effect = "slideUp", time = 500})
 end 
 
 -----------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ local function Level1ScreenTransition( )
 end    
 
 local function InstructionsTransition( )
-    composer.gotoScene( "Instruction_screen", {effect = "flipFadeOutIn", time = 500})
+    composer.gotoScene( "Instruction_screen", {effect = "slideRight", time = 500})
 end
 -- INSERT LOCAL FUNCTION DEFINITION THAT GOES TO INSTRUCTIONS SCREEN 
 
