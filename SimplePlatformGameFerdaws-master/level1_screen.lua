@@ -62,9 +62,9 @@ local uArrow
 local lArrow
 
 local motionx = 0
-local SPEED = 5
-local LINEAR_VELOCITY = -100
-local GRAVITY = 7
+local SPEED = 6
+local LINEAR_VELOCITY = -80
+local GRAVITY = 5
 
 local leftW 
 local topW
@@ -78,6 +78,17 @@ local theBall
 
 local questionsAnswered = 0
 
+----------------------------------------------------------------------------------------
+-- SOUND FUNCTIONS
+-------------------------------------------------------------------------------------------
+local popSound = audio.loadSound("Sounds/Pop.mp3")
+local popSoundChannel
+
+local youLose = audio.loadSound("Sounds/YouLose.mp3")
+local youLoseCannel
+
+local youWin = audio.loadSound("Sounds/Cheer.m4a")
+local youWinChannel
 -----------------------------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
 ----------------------------------------------------------------------------------------- 
@@ -179,7 +190,7 @@ local function YouLoseTransition()
 end
 
 local function YouWinTransition()
-    composer.gotoScene( "you_win" )
+    composer.gotoScene( "you_Win" )
 end
 
 local function onCollision( self, event )
@@ -219,12 +230,20 @@ local function onCollision( self, event )
                 
                 timer.performWithDelay(200, ReplaceCharacter) 
 
-            elseif (numLives == 0) then
+            elseif (numLives == 2) then
                 -- update hearts
                 heart1.isVisible = true
                 heart2.isVisible = false
                 heart3.isVisible = false
                 timer.performWithDelay(200, ReplaceCharacter) 
+
+            elseif (numLives == 0) then
+                -- update hearts
+                heart1.isVisible = false
+                heart2.isVisible = false
+                heart3.isVisible = false
+                YouLoseTransition() 
+                youLoseCannel = audio.play(youLose)
  
             end
         end
@@ -254,6 +273,7 @@ local function onCollision( self, event )
             if (questionsAnswered == 3) then
                 -- after getting 3 questions right, go to the you win screen
                 YouWinTransition()
+                youWinChannel = audio.play(youWin)
             end
         end        
 
@@ -315,6 +335,7 @@ local function AddPhysicsBodies()
     physics.addBody(leftW, "static", {density=1, friction=0.3, bounce=0.2} )
     physics.addBody(topW, "static", {density=1, friction=0.3, bounce=0.2} )
     physics.addBody(floor, "static", {density=1, friction=0.3, bounce=0.2} )
+    physics.addBody(rightW, "static", {density=1, friction=0.3, bounce=0.2} )
 
     physics.addBody(ball1, "static",  {density=0, friction=0, bounce=0} )
     physics.addBody(ball2, "static",  {density=0, friction=0, bounce=0} )
@@ -341,6 +362,7 @@ local function RemovePhysicsBodies()
     physics.removeBody(leftW)
     physics.removeBody(topW)
     physics.removeBody(floor)
+    physics.removeBody(rightW)
  
 end
 

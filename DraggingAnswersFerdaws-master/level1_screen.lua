@@ -1,8 +1,8 @@
 -----------------------------------------------------------------------------------------
 --
 -- game_level1.lua
--- Created by: Daniel
--- Date: Nov. 22nd, 2014
+-- Created by: Ferdaws
+-- Date: june. 7th, 2020
 -- Description: This is the level 1 screen of the game.
 -----------------------------------------------------------------------------------------
 
@@ -428,10 +428,6 @@ local function TouchListenerAnswerBox2(touch)
         end
     end
 end 
-
-
-
-
 
 
 local function TouchListenerAnswerBox3(touch)

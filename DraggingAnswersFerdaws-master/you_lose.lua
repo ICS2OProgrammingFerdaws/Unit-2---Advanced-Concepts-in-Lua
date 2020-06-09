@@ -1,9 +1,9 @@
 -----------------------------------------------------------------------------------------
 --
 -- credits_screen.lua
--- Created by: Daniel Lopez-Carreon
--- Date: Nov. 24th, 2014
--- Description: This is the you win screen
+-- Created by: Ferdaws
+-- Date: june. 7th, 2020
+-- Description: This is the you lose screen
 -----------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------
