@@ -222,7 +222,7 @@ local function onCollision( self, event )
             -- decrease number of lives
             numLives = numLives - 1
 
-            if (numLives == 1) then
+            if (numLives == 2) then
                 -- update hearts
                 heart1.isVisible = true
                 heart2.isVisible = true
@@ -230,7 +230,7 @@ local function onCollision( self, event )
                 
                 timer.performWithDelay(200, ReplaceCharacter) 
 
-            elseif (numLives == 2) then
+            elseif (numLives == 1) then
                 -- update hearts
                 heart1.isVisible = true
                 heart2.isVisible = false
@@ -616,7 +616,7 @@ function scene:show( event )
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
 
-        numLives = 2
+        numLives = 3
         questionsAnswered = 0
 
         -- make all soccer balls visible
